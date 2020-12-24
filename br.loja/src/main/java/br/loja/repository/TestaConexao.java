@@ -3,13 +3,17 @@ package br.loja.repository;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
+import br.loja.repository.data.connection.ConnectionFactory;
+
 public class TestaConexao {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		try {
 			
-			Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/loja_virtual?useTimezone=true&serverTimezone=UTC", "root", "developer");
+			ConnectionFactory criaConexao = new ConnectionFactory();
+			
+			Connection connection = criaConexao.recuperarConexao();
 			
 			System.out.println("-- getConnection OK --");
 			

@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.loja.repository.data.connection.ConnectionFactory;
 import br.loja.repository.models.Produto;
 
 public class TestaListagem {
@@ -16,7 +17,9 @@ public class TestaListagem {
 		// TODO Auto-generated method stub
 		try {
 			
-			Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/loja_virtual?useTimezone=true&serverTimezone=UTC", "root", "developer");
+			ConnectionFactory criaConexao = new ConnectionFactory();
+			
+			Connection connection = criaConexao.recuperarConexao();
 			
 			Statement statement = connection.createStatement();
 			
