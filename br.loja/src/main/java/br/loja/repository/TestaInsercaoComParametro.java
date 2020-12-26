@@ -12,15 +12,17 @@ import br.loja.repository.data.connection.ConnectionFactory;
 
 public class TestaInsercaoComParametro {
 
-	public static void main(String[] args) {
+	public static void main(String[] args){
 		// TODO Auto-generated method stub
-		try {
-			ConnectionFactory connectionFactory = new ConnectionFactory();
-			Connection connection = connectionFactory.recuperarConexao();
-			String sql = "Insert into produto (nome, descricao) values (?, ?)";
-			PreparedStatement stm = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+		ConnectionFactory connectionFactory = new ConnectionFactory();
+		
+		try (Connection connection = connectionFactory.recuperarConexao()){
 			
-			try {
+			//Connection connection = connectionFactory.recuperarConexao();
+			String sql = "Insert into produto (nome, descricao) values (?, ?)";
+			
+			
+			try(PreparedStatement stm = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 				
 				connection.setAutoCommit(false);
 				
@@ -34,14 +36,6 @@ public class TestaInsercaoComParametro {
 				// TODO: handle exception
 				e.printStackTrace();
 				connection.rollback();
-			}
-			finally {
-				
-				stm.close();
-				if(!connection.isClosed()) {
-					connection.close();
-				}
-				
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -62,7 +56,7 @@ public class TestaInsercaoComParametro {
 		stm.execute();
 		
 		
-		ResultSet rs = stm.getGeneratedKeys();
+		try(ResultSet rs = stm.getGeneratedKeys()){
 		
 		while (rs.next()) {
 			
@@ -71,11 +65,7 @@ public class TestaInsercaoComParametro {
 			System.out.println("ID Gerado -> " + id);
 			
 		}
-		
-		
-		
-		
-		
+		}
 	}
 
 }
